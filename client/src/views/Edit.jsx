@@ -1,25 +1,26 @@
-import TemplateForm from '../components/TemplateForm';
+import ProductForm from '../components/ProductForm';
 import { navigate } from '@reach/router';
 import {useState, useEffect} from 'react';
 import Axios from 'axios';
 
 const Edit = props => {
-    const [template, setTemplate] = useState(false);
+    const [product, setProduct] = useState(false);
 
     useEffect(() => {
-        Axios.get(`http://localhost:8000/api/templates/${props.id}`)
-            .then(res => setTemplate(res.data.results[0]))
+        Axios.get(`http://localhost:8000/api/products/${props.id}`)
+            .then(res => setProduct(res.data.results[0]))
             .catch(err => console.log(err))
     }, [props])
 
     const [errors, setErrors] = useState({
-        itemOne: "",
-        itemTwo: ""
+        title:"",
+        price: null,
+        description: ""
     })
 
     const handleChange = e => {
-        setTemplate({
-            ...template,
+        setProduct({
+            ...product,
             [e.target.name] : e.target.value
         })
     }
@@ -27,7 +28,7 @@ const Edit = props => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        Axios.put(`http://localhost:8000/api/templates/${props.id}`, template)
+        Axios.put(`http://localhost:8000/api/products/${props.id}`, product)
         .then(res => navigate('/'))
         .catch(err => {
             console.log(err.response.data.errors);
@@ -38,9 +39,9 @@ const Edit = props => {
     return(
         <>
             {
-                template?
-                <TemplateForm 
-                    inputs = {template}
+                product?
+                <ProductForm 
+                    inputs = {product}
                     title = "Edit Template"
                     submitValue = "Edit"
                     handleInputChange = {handleChange}
