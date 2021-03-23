@@ -1,3 +1,4 @@
+import DeleteButtonComponent from '../components/DeleteButtonComponent';
 import { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
 import Axios from 'axios';
@@ -11,11 +12,15 @@ const Main = props => {
             .catch(err => console.log(err))
     }, [])
 
-    const handleDestroyProduct = (id) => {
-        Axios.delete(`http://localhost:8000/api/products/${id}`)
-            .then(res => setProducts(res.data.results))
-            .catch(err => console.log(err))
+    const removeFromDOM = (productID) => {
+        setProducts(products.filter(product => product._id !== productID))
     }
+
+    // const handleDestroyProduct = (id) => {
+    //     Axios.delete(`http://localhost:8000/api/products/${id}`)
+    //         .then(res => setProducts(res.data.results))
+    //         .catch(err => console.log(err))
+    // }
 
     return(
         products ?
@@ -40,11 +45,10 @@ const Main = props => {
                                         <Link className="btn btn-warning" to={`/edit/${p._id}`}
                                             >Edit
                                         </Link>
-                                        <button 
-                                            className="btn btn-danger"
-                                            onClick={() => {handleDestroyProduct(p._id)}}
-                                            >Delete
-                                        </button>
+                                        <DeleteButtonComponent 
+                                            productID={p._id} 
+                                            successCallback = {() => removeFromDOM(p._id)}
+                                        />
                                     </td>
                             </tr>
                         })

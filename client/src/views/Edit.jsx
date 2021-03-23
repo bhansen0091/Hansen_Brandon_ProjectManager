@@ -14,7 +14,7 @@ const Edit = props => {
 
     const [errors, setErrors] = useState({
         title:"",
-        price: null,
+        price: .00,
         description: ""
     })
 

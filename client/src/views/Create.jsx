@@ -7,13 +7,13 @@ import Axios from 'axios';
 const Create = props => {
     const [product, setProduct] = useState({
         title:"",
-        price: null,
+        price: .00,
         description: ""
     })
 
     const [errors, setErrors] = useState({
         title:"",
-        price: "",
+        price: .01,
         description: ""
     })
 
@@ -28,13 +28,12 @@ const Create = props => {
         e.preventDefault();
 
         Axios.post("http://localhost:8000/api/products", product)
-        .then(res => navigate('/'))
-        .catch(err => {
-            console.log(err.response.data.errors);
-            setErrors(err.response.data.errors)
+            .then(res => navigate('/'))
+            .catch(err => {
+                console.log(err.response.data.errors);
+                setErrors(err.response.data.errors)
         })
     }
-
 
     return(
         <>
